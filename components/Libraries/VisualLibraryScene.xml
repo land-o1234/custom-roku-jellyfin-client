@@ -11,7 +11,8 @@
       id="itemGrid"
       itemComponentName="GridItemSmall"
       vertFocusAnimationStyle="fixed"
-      itemSpacing="[20, 20]" />
+      itemSpacing="[20, 20]"
+      translation="[100, 280]" />
 
     <RowList
       id="genrelist"
@@ -19,25 +20,27 @@
       vertFocusAnimationStyle="fixed"
       itemSpacing="[0, 60]"
       opacity="0"
-      translation="[100, 260]"
+      translation="[100, 280]"
       showRowLabel="true"
       numColumns="1"
       rowItemSpacing="[ [20, 0] ]" />
 
     <DropdownMenuRow
       id="dropdownOptionGroup"
-      translation="[100, 120]" />
+      translation="[100, 60]" />
+
+    <LibraryCategoryFilter id="categoryFilter" translation="[100, 170]" />
 
     <ChipsRow
       id="chipsRow"
-      translation="[100, 200]" />
+      translation="[100, 220]" />
 
     <Animation id="toggleDropdownOptionsAnimation" duration="1" repeat="false" easeFunction="linear">
       <FloatFieldInterpolator id="dropdownOptionsFade" key="[0.0, 1.0]" keyValue="[1.00, 0.00]" fieldToInterp="dropdownOptionGroup.opacity" />
       <Vector2DFieldInterpolator id="dropdownOptionsMove" key="[0.1, .9]" keyValue="[[100, 60], [100, 0]]" fieldToInterp="dropdownOptionGroup.translation" />
-      <Vector2DFieldInterpolator id="itemGridMove" key="[0.1, .9]" keyValue="[[100, 260], [100, 120]]" fieldToInterp="itemGrid.translation" />
-      <Vector2DFieldInterpolator id="chipsRowMove" key="[0.1, .9]" keyValue="[[100, 200], [100, 60]]" fieldToInterp="chipsRow.translation" />
-      <Vector2DFieldInterpolator id="genreListMove" key="[0.1, .9]" keyValue="[[100, 260], [100, 120]]" fieldToInterp="genrelist.translation" />
+      <Vector2DFieldInterpolator id="itemGridMove" key="[0.1, .9]" keyValue="[[100, 280], [100, 170]]" fieldToInterp="itemGrid.translation" />
+      <Vector2DFieldInterpolator id="chipsRowMove" key="[0.1, .9]" keyValue="[[100, 220], [100, 100]]" fieldToInterp="chipsRow.translation" />
+      <Vector2DFieldInterpolator id="genreListMove" key="[0.1, .9]" keyValue="[[100, 280], [100, 170]]" fieldToInterp="genrelist.translation" />
     </Animation>
 
     <Text id="selectedItemName" visible="false" translation="[120, 40]" wrap="true" font="font:LargeBoldSystemFont" width="850" height="196" horizAlign="left" vertAlign="center" />
@@ -64,7 +67,7 @@
     <Text translation="[0,540]" id="emptyText" font="font:LargeSystemFont" width="1910" horizAlign="center" vertAlign="center" height="64" visible="false" />
     <LibraryFilterDialog id="options" visible="false" />
 
-    <Alpha id="alpha" wrap="false" />
+    <LibraryCategoryFilter id="categoryFilter" />
     <SlideOutButton id="librarySettings" translation="[32, 50]" background="0x00000000" highlightBackground="#555555" padding="20" icon="pkg:/images/icons/settings.png" text="Library Settings" height="50" width="60" />
   </children>
   <interface>
@@ -75,9 +78,8 @@
     <field id="selectedItem" type="node" alwaysNotify="true" />
     <field id="quickPlayNode" type="node" alwaysNotify="true" />
     <field id="imageDisplayMode" type="string" value="" />
-    <field id="alphaSelected" type="string" alias="alpha.letterSelected" onChange="alphaSelectedChanged" alwaysNotify="true" />
+    <field id="categorySelected" type="string" alias="categoryFilter.categorySelected" onChange="categorySelectedChanged" alwaysNotify="true" />
     <field id="searchTerm" type="string" onChange="onSearchTermChanged" alwaysNotify="true" />
-    <field id="alphaActive" type="boolean" value="false" />
     <field id="showItemTitles" type="string" value="" />
   </interface>
 </component>

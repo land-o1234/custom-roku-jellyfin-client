@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<component name="LibraryCategoryItem" extends="Group">
+  <children>
+    <Rectangle
+      id="background"
+      color="0x333333FF"
+      width="120"
+      height="40" />
+    <Text
+      id="label"
+      translation="[10, 5]"
+      width="100"
+      height="30"
+      font="font:SmallBoldSystemFont"
+      horizAlign="center"
+      vertAlign="center"
+      wrap="false" />
+  </children>
+  <interface>
+    <field id="title" type="string" />
+  </interface>
+  <script type="text/brightscript">
+    <![CDATA[
+      sub init()
+        m.label = m.top.findNode("label")
+        m.background = m.top.findNode("background")
+        m.top.observeFieldScoped("title", "titleChanged")
+      end sub
+
+      sub titleChanged()
+        m.label.text = m.top.title
+      end sub
+
+      sub onGainedFocus(isFocused as boolean)
+        if isFocused
+          m.background.color = "0x00a4dcFF"
+        else
+          m.background.color = "0x333333FF"
+        end if
+      end sub
+    ]]>
+  </script>
+</component>

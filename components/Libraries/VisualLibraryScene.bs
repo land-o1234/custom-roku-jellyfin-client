@@ -44,8 +44,7 @@ sub setupNodes()
     m.selectedItemProductionYear = m.top.findNode("selectedItemProductionYear")
     m.selectedItemOfficialRating = m.top.findNode("selectedItemOfficialRating")
     m.itemLogo = m.top.findNode("itemLogo")
-    m.alpha = m.top.findNode("alpha")
-    m.alphaMenu = m.alpha.findNode("alphaMenu")
+    m.categoryFilter = m.top.findNode("categoryFilter")
     m.communityRatingGroup = m.top.findNode("communityRatingGroup")
     m.criticRatingIcon = m.top.findNode("criticRatingIcon")
     m.criticRatingGroup = m.top.findNode("criticRatingGroup")
@@ -73,20 +72,9 @@ sub onExit()
     dropdownExitDirection = m.dropdownOptionGroup.exit
 
     if dropdownExitDirection = ExitDirection.LEFT
-        alphaDisplayed = m.alpha.callFunc("getDisplay")
-
-        if alphaDisplayed
-            m.top.alphaActive = true
-            m.alphaMenu.setFocus(true)
-            group = m.global.sceneManager.callFunc("getActiveScene")
-            group.lastFocus = m.alphaMenu
-        else
-            m.librarySettings.setFocus(true)
-            m.librarySettings.highlighted = true
-            group = m.global.sceneManager.callFunc("getActiveScene")
-            group.lastFocus = m.librarySettings
-        end if
-
+        m.categoryFilter.setFocus(true)
+        group = m.global.sceneManager.callFunc("getActiveScene")
+        group.lastFocus = m.categoryFilter
         return
     end if
 
@@ -449,17 +437,17 @@ sub loadInitialItems()
         m.itemLogo.visible = false
 
         if m.dropdownOptionGroup.opacity < 1
-            m.itemGrid.translation = "[100, 60]"
+            m.itemGrid.translation = "[100, 170]"
         else
-            m.itemGrid.translation = "[100, 260]"
+            m.itemGrid.translation = "[100, 280]"
         end if
 
         m.dropdownOptionsMove.keyValue = "[[100, 60], [100, 0]]"
-        m.chipsRowMove.keyValue = "[[100, 200], [100, 60]]"
-        m.itemGridMove.keyValue = "[[100, 260], [100, 120]]"
+        m.chipsRowMove.keyValue = "[[100, 220], [100, 100]]"
+        m.itemGridMove.keyValue = "[[100, 280], [100, 170]]"
         m.emptyText.translation = "[0, 540]"
         m.dropdownOptionGroup.translation = "[100, 60]"
-        m.chipsRow.translation = "[100, 200]"
+        m.chipsRow.translation = "[100, 220]"
         m.itemGrid.numRows = "3"
         m.selectedItemOverview.visible = false
         m.selectedItemName.visible = false
@@ -471,17 +459,17 @@ sub loadInitialItems()
         m.itemLogo.visible = false
 
         if m.dropdownOptionGroup.opacity < 1
-            m.itemGrid.translation = "[100, 60]"
+            m.itemGrid.translation = "[100, 170]"
         else
-            m.itemGrid.translation = "[100, 260]"
+            m.itemGrid.translation = "[100, 280]"
         end if
 
         m.dropdownOptionsMove.keyValue = "[[100, 60], [100, 0]]"
-        m.chipsRowMove.keyValue = "[[100, 200], [100, 60]]"
-        m.itemGridMove.keyValue = "[[100, 260], [100, 120]]"
+        m.chipsRowMove.keyValue = "[[100, 220], [100, 100]]"
+        m.itemGridMove.keyValue = "[[100, 280], [100, 170]]"
         m.emptyText.translation = "[0, 540]"
         m.dropdownOptionGroup.translation = "[100, 60]"
-        m.chipsRow.translation = "[100, 200]"
+        m.chipsRow.translation = "[100, 220]"
         m.itemGrid.numRows = "3"
         m.selectedItemOverview.visible = false
         m.selectedItemName.visible = false
@@ -493,17 +481,17 @@ sub loadInitialItems()
         m.itemLogo.visible = false
 
         if m.dropdownOptionGroup.opacity < 1
-            m.itemGrid.translation = "[100, 60]"
+            m.itemGrid.translation = "[100, 170]"
         else
-            m.itemGrid.translation = "[100, 260]"
+            m.itemGrid.translation = "[100, 280]"
         end if
 
         m.dropdownOptionsMove.keyValue = "[[100, 60], [100, 0]]"
-        m.chipsRowMove.keyValue = "[[100, 200], [100, 60]]"
-        m.itemGridMove.keyValue = "[[100, 260], [100, 120]]"
+        m.chipsRowMove.keyValue = "[[100, 220], [100, 100]]"
+        m.itemGridMove.keyValue = "[[100, 280], [100, 170]]"
         m.emptyText.translation = "[0, 540]"
         m.dropdownOptionGroup.translation = "[100, 60]"
-        m.chipsRow.translation = "[100, 200]"
+        m.chipsRow.translation = "[100, 220]"
         m.itemGrid.numRows = "3"
         m.selectedItemOverview.visible = false
         m.selectedItemName.visible = false
@@ -547,8 +535,6 @@ sub loadInitialItems()
         m.genreList.rowHeights = "[360]"
     end if
 
-    alphaDisplayed = m.alpha.callFunc("getDisplay")
-
     if isStringEqual(m.view, "Episodes")
         m.itemGrid.itemComponentName = "GridItemMedium"
         m.itemGrid.itemSize = "[400, 330]"
@@ -556,14 +542,6 @@ sub loadInitialItems()
         m.itemGrid.itemSpacing = "[40, 20]"
         m.itemGrid.numColumns = 4
         m.top.imageDisplayMode = "scaleToZoom"
-
-        if alphaDisplayed
-            m.alpha.callFunc("setDisplay", false)
-        end if
-    else
-        if not alphaDisplayed
-            m.alpha.callFunc("setDisplay", true)
-        end if
     end if
 
     ' If user has not set a library level setting, check the user level setting
@@ -1055,7 +1033,7 @@ sub ItemDataLoaded(msg)
         m.itemGrid.opacity = "1"
         m.genreList.opacity = "0"
 
-        m.alphaMenu.setFocus(false)
+        m.categoryFilter.setFocus(false)
         m.itemGrid.setFocus(true)
         m.genreList.setFocus(false)
         group = m.global.sceneManager.callFunc("getActiveScene")
@@ -1111,15 +1089,6 @@ sub showNoResultsText()
 
     m.emptyText.text = tr("No items found. Try adjusting your selected filters.")
     m.emptyText.visible = true
-
-    if m.top.alphaActive
-        m.global.sceneManager.unobserveFieldScoped("returnData")
-        m.dropdownOptionGroup@.setSearchBackground(SearchButtonState.INACTIVE)
-        m.alphaMenu.setFocus(true)
-        group = m.global.sceneManager.callFunc("getActiveScene")
-        group.lastFocus = m.alphaMenu
-        return
-    end if
 
     m.global.sceneManager.observeFieldScoped("returnData", "onReturnData")
     m.dropdownOptionGroup.canExitDown = false
@@ -1487,15 +1456,8 @@ sub onSearchTermChanged()
     loadInitialItems()
 end sub
 
-sub alphaSelectedChanged()
-    ' Prevent voicebox change double firing
-    if isStringEqual(m.top.searchTerm, string.EMPTY)
-        ' Allow user to toggle by clicking letter twice
-        if isStringEqual(m.loadItemsTask.nameStartsWith, m.top.alphaSelected)
-            m.top.alphaSelected = string.EMPTY
-        end if
-    end if
-
+sub categorySelectedChanged()
+    ' Reset filter when category changes
     m.loadItemsTask.control = TaskControl.STOP
     m.loadedRows = 0
     m.loadedItems = 0
@@ -1506,13 +1468,28 @@ sub alphaSelectedChanged()
     m.genreData = CreateObject("roSGNode", "ContentNode")
     m.genreList.content = m.genreData
 
-    if isValidAndNotEmpty(m.top.alphaSelected)
-        m.chipsRow@.addChip("startswith", tr("Starts With"), m.top.alphaSelected)
+    ' Set the filter based on category selection
+    selectedCategory = m.top.categorySelected
+    if not isValidAndNotEmpty(selectedCategory) then selectedCategory = "All"
+
+    ' Map category names to filter values for LoadItemsTask2
+    if isStringEqual(selectedCategory, "Favorites")
+        m.filter = "IsFavorite"
+        m.chipsRow@.addChip("category", tr("Filter"), tr("Favorites"))
+    else if isStringEqual(selectedCategory, "Unplayed")
+        m.filter = "Unplayed"
+        m.chipsRow@.addChip("category", tr("Filter"), tr("Unplayed"))
+    else if isStringEqual(selectedCategory, "Played")
+        m.filter = "Played"
+        m.chipsRow@.addChip("category", tr("Filter"), tr("Played"))
+    else if isStringEqual(selectedCategory, "Resumable")
+        m.filter = "Resumable"
+        m.chipsRow@.addChip("category", tr("Filter"), tr("Resumable"))
     else
-        m.chipsRow@.removeChip("startswith")
+        m.filter = "All"
+        m.chipsRow@.removeChip("category")
     end if
 
-    m.loadItemsTask.nameStartsWith = m.top.alphaSelected
     m.dropdownOptionGroup@.setText("voiceBox", string.EMPTY)
     m.top.searchTerm = string.EMPTY
     loadInitialItems()
@@ -1613,8 +1590,6 @@ sub onViewChange(viewChoice)
     ' Reset any filtering or search terms
     m.bypassSearchEvent = true
     m.top.searchTerm = string.EMPTY
-    m.top.alphaSelected = string.EMPTY
-    m.loadItemsTask.NameStartsWith = " "
     m.loadItemsTask.searchTerm = string.EMPTY
     m.filter = "All"
     m.filterOptions = {}
@@ -1699,72 +1674,35 @@ end sub
 function onKeyEvent(key as string, press as boolean) as boolean
     if not press then return false
 
-    if isStringEqual(key, KeyCode.DOWN)
-        if m.alphaMenu.isinFocusChain()
-            if m.alphaMenu.itemFocused = m.alphaMenu.numRows - 1
-                m.librarySettings.setFocus(true)
-                m.librarySettings.highlighted = true
-                return true
-            end if
-        end if
-
-        if m.librarySettings.isinFocusChain()
-            alphaDisplayed = m.alpha.callFunc("getDisplay")
-            if not alphaDisplayed then return true
-
-            m.librarySettings.highlighted = false
-            m.alphaMenu.setFocus(true)
-            m.alphaMenu.jumpToItem = 0
+    if isStringEqual(key, KeyCode.UP)
+        if m.itemGrid.isinFocusChain() or m.genreList.isinFocusChain()
+            ' Move from grid to category filter
+            m.itemGrid.setFocus(false)
+            m.genreList.setFocus(false)
+            m.categoryFilter.setFocus(true)
+            group = m.global.sceneManager.callFunc("getActiveScene")
+            group.lastFocus = m.categoryFilter
             return true
         end if
     end if
 
-    if isStringEqual(key, KeyCode.UP)
-        if m.alphaMenu.isinFocusChain()
-            if m.alphaMenu.itemFocused = 0
-                m.librarySettings.setFocus(true)
-                m.librarySettings.highlighted = true
+    if isStringEqual(key, KeyCode.DOWN)
+        if m.categoryFilter.isinFocusChain()
+            ' Move from category filter to grid
+            m.categoryFilter.setFocus(false)
+            if m.loadedItems = 0
                 return true
             end if
-        end if
-
-        if m.librarySettings.isinFocusChain()
-            alphaDisplayed = m.alpha.callFunc("getDisplay")
-            if not alphaDisplayed then return true
-
-            m.librarySettings.highlighted = false
-            m.alphaMenu.setFocus(true)
-            m.alphaMenu.jumpToItem = m.alphaMenu.numRows - 1
-            return true
-        end if
-
-        if m.itemGrid.isinFocusChain() or m.genreList.isinFocusChain()
-
-            ' In case user quickly moves out of grid without focused row getting updated
-            if m.dropdownOptionGroup.opacity < 1
-                toggleDropdownOptions(true)
-            end if
-
-            activeGrid = m.genreList.isinFocusChain() ? m.genreList : m.itemGrid
-            numColumns = m.genreList.isinFocusChain() ? m.genreList.content.getChild(0).getChildCount() : m.itemGrid.numColumns
-            overhangButton = m.dropdownOptionGroup@.getOverhangingButton(numColumns, activeGrid.currFocusColumn)
-
-            m.global.sceneManager.observeFieldScoped("returnData", "onReturnData")
-
-            if overhangButton.isSubType("VoiceTextEditBox")
-                m.dropdownOptionGroup@.setSearchBackground(SearchButtonState.ACTIVE)
-            else
-                m.dropdownOptionGroup@.setFocus(overhangButton.id, true)
-            end if
-            overhangButton.setFocus(true)
+            m.itemGrid.setFocus(m.itemGrid.opacity = 1)
+            m.genreList.setFocus(m.genreList.opacity = 1)
             group = m.global.sceneManager.callFunc("getActiveScene")
-            group.lastFocus = overhangButton
+            group.lastFocus = m.itemGrid.opacity = 1 ? m.itemGrid : m.genreList
             return true
         end if
     end if
 
     if isStringEqual(key, KeyCode.BACK)
-        ' If user pressed back whole scrolled down the grid, reset to item 1
+        ' If user pressed back while scrolled down the grid, reset to item 1
         if m.itemGrid.isinFocusChain() or m.genreList.isinFocusChain()
             gridComponent = m.itemGrid.isinFocusChain() ? m.itemGrid : m.genreList
 
@@ -1799,40 +1737,20 @@ function onKeyEvent(key as string, press as boolean) as boolean
     end if
 
     if isStringEqual(key, KeyCode.LEFT)
-        alphaDisplayed = m.alpha.callFunc("getDisplay")
-        if not alphaDisplayed
-            if not m.librarySettings.highlighted
-                m.librarySettings.setFocus(true)
-                m.librarySettings.highlighted = true
-            end if
+        if m.itemGrid.isinFocusChain() or m.genreList.isinFocusChain()
+            m.itemGrid.setFocus(false)
+            m.genreList.setFocus(false)
+            m.librarySettings.setFocus(true)
+            m.librarySettings.highlighted = true
             group = m.global.sceneManager.callFunc("getActiveScene")
             group.lastFocus = m.librarySettings
-            return true
-        end if
-
-        if m.itemGrid.isinFocusChain()
-            m.top.alphaActive = true
-            m.itemGrid.setFocus(false)
-            m.alphaMenu.setFocus(true)
-            group = m.global.sceneManager.callFunc("getActiveScene")
-            group.lastFocus = m.alphaMenu
-            return true
-        else if m.genreList.isinFocusChain()
-            m.top.alphaActive = true
-            m.genreList.setFocus(false)
-            m.alphaMenu.setFocus(true)
-            group = m.global.sceneManager.callFunc("getActiveScene")
-            group.lastFocus = m.alphaMenu
             return true
         end if
     end if
 
     if isStringEqual(key, KeyCode.RIGHT)
-        if m.alpha.isinFocusChain() or m.librarySettings.isinFocusChain()
+        if m.librarySettings.isinFocusChain()
             m.librarySettings.highlighted = false
-            m.top.alphaActive = false
-            m.alphaMenu.setFocus(false)
-
             if m.loadedItems = 0
                 m.global.sceneManager.observeFieldScoped("returnData", "onReturnData")
                 m.dropdownOptionGroup@.setFocus("voiceBox", true)
@@ -1843,7 +1761,6 @@ function onKeyEvent(key as string, press as boolean) as boolean
                 group = m.global.sceneManager.callFunc("getActiveScene")
                 group.lastFocus = m.itemGrid.opacity = 1 ? m.itemGrid : m.genreList
             end if
-
             return true
         end if
     end if

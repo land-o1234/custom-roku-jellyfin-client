@@ -1,0 +1,77 @@
+import "pkg:/source/enums/ColorPalette.bs"
+import "pkg:/source/enums/KeyCode.bs"
+import "pkg:/source/utils/misc.bs"
+
+sub init()
+    m.categoryList = m.top.findNode("categoryList")
+    m.categoryList.focusBitmapBlendColor = chainLookupReturn(m.global.session, "user.settings.colorCursor", ColorPalette.HIGHLIGHT)
+    m.categoryList.focusFootprintBlendColor = ColorPalette.TRANSPARENT
+
+    ' Create default categories
+    m.categoryList.content = createDefaultCategories()
+    m.top.setFocus(false)
+end sub
+
+function createDefaultCategories() as object
+    categories = CreateObject("roSGNode", "ContentNode")
+
+    row = CreateObject("roSGNode", "ContentNode")
+    row.addField("children", "array", true)
+
+    ' Define default category filters
+    filterOptions = [
+        { title: "All", filter: "All", filterValue: "" },
+        { title: "Favorites", filter: "Favorites", filterValue: "IsFavorite" },
+        { title: "Unplayed", filter: "Unplayed", filterValue: "Unplayed" },
+        { title: "Played", filter: "Played", filterValue: "Played" },
+        { title: "Resumable", filter: "Resumable", filterValue: "Resumable" }
+    ]
+
+    for each option in filterOptions
+        item = CreateObject("roSGNode", "ContentNode")
+        item.addFields({
+            title: option.title,
+            filter: option.filter,
+            filterValue: option.filterValue
+        })
+        row.appendChild(item)
+    end for
+
+    categories.appendChild(row)
+    return categories
+end function
+
+function onKeyEvent(key as string, press as boolean) as boolean
+    if not press then return false
+    if not m.categoryList.isInFocusChain() then return false
+
+    if key = KeyCode.OK
+        focusedItem = m.categoryList.content.getChild(0).getChild(m.categoryList.rowItemSelected)
+        if isValid(focusedItem)
+            m.top.categorySelected = focusedItem.filter
+            return true
+        end if
+        return false
+    end if
+
+    ' Allow LEFT/RIGHT to navigate within the carousel
+    if key = KeyCode.LEFT or key = KeyCode.RIGHT
+        return false
+    end if
+
+    return false
+end function
+
+sub setCategories(categories as object)
+    if isValid(categories)
+        m.categoryList.content = categories
+    end if
+end sub
+
+function getSelectedCategory() as string
+    focusedItem = m.categoryList.content.getChild(0).getChild(m.categoryList.rowItemSelected)
+    if isValid(focusedItem)
+        return focusedItem.filter
+    end if
+    return "All"
+end function
