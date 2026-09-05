@@ -4,7 +4,14 @@ import "pkg:/source/utils/misc.bs"
 
 sub init()
     m.categoryList = m.top.findNode("categoryList")
-    m.categoryList.focusBitmapBlendColor = chainLookupReturn(m.global.session, "user.settings.colorCursor", ColorPalette.HIGHLIGHT)
+
+    ' Safely set focus colors if global session is available
+    if isValid(m.global) and isValid(m.global.session)
+        m.categoryList.focusBitmapBlendColor = chainLookupReturn(m.global.session, "user.settings.colorCursor", ColorPalette.HIGHLIGHT)
+    else
+        m.categoryList.focusBitmapBlendColor = ColorPalette.HIGHLIGHT
+    end if
+
     m.categoryList.focusFootprintBlendColor = ColorPalette.TRANSPARENT
 
     ' Create default categories
@@ -46,10 +53,13 @@ function onKeyEvent(key as string, press as boolean) as boolean
     if not m.categoryList.isInFocusChain() then return false
 
     if key = KeyCode.OK
-        focusedItem = m.categoryList.content.getChild(0).getChild(m.categoryList.rowItemSelected)
-        if isValid(focusedItem)
-            m.top.categorySelected = focusedItem.filter
-            return true
+        rowItemCoords = m.categoryList.rowItemSelected
+        if isValid(rowItemCoords) and rowItemCoords.Count() > 1
+            focusedItem = m.categoryList.content.getChild(0).getChild(rowItemCoords[1])
+            if isValid(focusedItem)
+                m.top.categorySelected = focusedItem.filter
+                return true
+            end if
         end if
         return false
     end if
@@ -69,9 +79,12 @@ sub setCategories(categories as object)
 end sub
 
 function getSelectedCategory() as string
-    focusedItem = m.categoryList.content.getChild(0).getChild(m.categoryList.rowItemSelected)
-    if isValid(focusedItem)
-        return focusedItem.filter
+    rowItemCoords = m.categoryList.rowItemSelected
+    if isValid(rowItemCoords) and rowItemCoords.Count() > 1
+        focusedItem = m.categoryList.content.getChild(0).getChild(rowItemCoords[1])
+        if isValid(focusedItem)
+            return focusedItem.filter
+        end if
     end if
     return "All"
 end function

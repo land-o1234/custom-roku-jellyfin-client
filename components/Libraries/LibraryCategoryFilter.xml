@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <component name="LibraryCategoryFilter" extends="Group">
-  <children>
-    <RowList
-      id="categoryList"
-      itemComponentName="LibraryCategoryItem"
-      vertFocusAnimationStyle="fixedCenter"
-      horizFocusAnimationStyle="fixedCenter"
-      numRows="1"
-      showRowLabel="false"
-      rowItemSpacing="[ [15, 0] ]"
-      itemSpacing="[0, 0]"
-      translation="[100, 120]"
-      clipRect="[0, 0, 1720, 50]" />
-  </children>
-  <interface>
-    <field id="categorySelected" type="string" alwaysNotify="true" />
-  </interface>
+    <children>
+        <RowList
+            id="categoryList"
+            itemComponentName="LibraryCategoryItem"
+            vertFocusAnimationStyle="fixedCenter"
+            horizFocusAnimationStyle="fixedCenter"
+            numRows="1"
+            showRowLabel="false"
+            rowItemSpacing="[ [15, 0] ]"
+            itemSpacing="[0, 0]"
+            translation="[100, 120]"
+            clipRect="[0, 0, 1720, 50]" />
+    </children>
+    <interface>
+        <field id="categorySelected" type="string" alwaysNotify="true" />
+    </interface>
 </component>
